@@ -12,4 +12,6 @@ for (let b of fs.readdirSync(jp)) {
     if (fs.lstatSync(bp).isDirectory()) mix.js(bp, bpp); // If bundle is directory, bundle the scripts contained in it
 }
 
-mix.sass('resources/sass/app.scss', 'public/css');
+mix
+    .sass('resources/sass/app.scss', 'public/css')
+    .sass('resources/sass/redirect.scss', 'public/css');

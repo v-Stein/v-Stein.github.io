@@ -2,4 +2,6 @@
 /.secrets/
 /resources/
 /.npmignore
+/package.json
+/webpack.mix.js
 /node_modules/

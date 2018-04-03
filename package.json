@@ -12,7 +12,8 @@
     "webpack": "node_modules/laravel-mix/setup/webpack.config.js"
   },
   "dependencies": {
-    "hellojs": "^1.16.1"
+    "hellojs": "^1.16.1",
+    "jquery": "latest"
   },
   "devDependencies": {
     "cross-env": "^5.1.3",
