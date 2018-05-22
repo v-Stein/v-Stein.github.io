@@ -2,6 +2,7 @@ const Lexer = require('./lexer/lexer');
 const TreeBuilder = require('./tree/builder');
 const SyntaxParser = require('./syntax/parser');
 const fs = require('fs');
+const { exec } = require('child_process');
 
 
 class Compiler {
@@ -11,12 +12,25 @@ class Compiler {
         this.syntaxParser = new SyntaxParser();
     }
 
-    compile (file, encoding = 'utf-8') {
+    compile (file, out, encoding = 'utf-8') {
         let content = fs.readFileSync(file, encoding);
 
-        this._runTreeBuilder(
-            this._runLexer(content)
-        )
+        let result = this._runSyntaxParser(
+            this._runTreeBuilder(
+                this._runLexer(content)
+            )
+        );
+
+        fs.writeFileSync('./temp.cc', result);
+
+        exec('gcc ./temp.cc -o ' + out + ' -lstdc++ -std=c++14', (err, stdout, stderr) => {
+            if (err) {
+                console.error(err);
+                return;
+            }
+
+            // fs.unlinkSync('./temp.cc');
+        });
     }
 
     _runLexer (content) {

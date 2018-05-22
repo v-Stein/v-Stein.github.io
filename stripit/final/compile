@@ -1,0 +1,26 @@
+const Compiler = require('./compiler');
+
+let inputFile,
+    outFile,
+    encoding = 'utf-8';
+
+for (let arg of process.argv) {
+    if (~arg.indexOf('=')) {
+        let [argName, argVal] = arg.split('=');
+
+        if (argName.toLowerCase() === '--file') {
+            inputFile = argVal;
+        }
+        if (argName.toLowerCase() === '--out') {
+            outFile = argVal;
+        }
+        if (argName.toLowerCase() === '--encode') {
+            encoding = argVal;
+        }
+    }
+}
+
+let compiler = new Compiler();
+
+
+compiler.compile(inputFile, outFile, encoding);

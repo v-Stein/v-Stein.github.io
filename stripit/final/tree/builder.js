@@ -458,7 +458,7 @@ class TreeBuilder {
         if (this._static._isSemiSymbol(fourthToken))        return this._parseClassVariableDeclaration(position);
         if (this._static._isExclamationSymbol(secondToken)) return this._parseClassConstantDeclaration(position);
         if (this._static._isColonSymbol(thirdToken))        return this._parseClassMethod(position);
-
+        if (this._static._isL_ParenSymbol(thirdToken))      return this._parseClassMethod(position);
         // If we end up here, then it is nothing from the above and that isn't normal
         throw Error('Unexpected statement');
     }
@@ -555,6 +555,9 @@ class TreeBuilder {
         //   - The name identifier
         //   - A colon symbol
         //   - The return type identifier
+        // Or it is a constructor and then it contains 2 tokens:
+        //   - The protection (should always be public)
+        //   - The name identifier
 
         const
             secondToken = this.getTokenAt(position, 1),
@@ -562,14 +565,26 @@ class TreeBuilder {
             fourthToken = this.getTokenAt(position, 3);
 
         if (! this._static._isIdentifier(secondToken)) throw Error('Unexpected token ' + secondToken.value);
-        if (! this._static._isColonSymbol(thirdToken)) throw Error('Unexpected token ' + thirdToken.value);
-        if (! this._static._isIdentifier(fourthToken)) throw Error('Unexpected token ' + fourthToken.value);
+        if (! this._static._isColonSymbol(thirdToken)) {
+            // Constructor
+            if (! this._static._isL_ParenSymbol(thirdToken)) throw Error('Unexpected token ' + thirdToken.value);
 
-        return {
-            name: secondToken.value,
-            returnType: fourthToken.value,
-            parametersPosition: position + 4
-        };
+            return {
+                name: secondToken.value,
+                returnType: '',
+                parametersPosition: position + 2
+            };
+        }
+        else {
+            // Regular method
+            if (! this._static._isIdentifier(fourthToken)) throw Error('Unexpected token ' + fourthToken.value);
+
+            return {
+                name: secondToken.value,
+                returnType: fourthToken.value,
+                parametersPosition: position + 4
+            };
+        }
     }
 
     _parseClassMethodParameters (openingParenPosition) {
