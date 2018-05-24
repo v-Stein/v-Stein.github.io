@@ -13,8 +13,8 @@ class Console {
 
 class Foo: public Console {
     public:
-        void greet(String user) {
-            this->out ( "Greetings " + user + "!" );
+        void greet (String user) {
+            this->out("Greetings " + user + "!");
         }
 };
 
@@ -23,13 +23,13 @@ class Main {
         Console c;
         String user;
     public:
-         Main() {
+         Main () {
             this->user = "some user";
         }
-        Int main() {
+        Int main () {
             Foo myClass;
-            c.out ( "This is a program that has a Console property." );
-            myClass.greet ( this->user );
+            this->c.out("This is a program that has a Console property.");
+            myClass.greet(this->user);
             return 0;
         }
 };

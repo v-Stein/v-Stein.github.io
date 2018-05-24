@@ -637,6 +637,12 @@ class TreeBuilder {
 
 
         while (pos < closingBracePosition) {
+
+            if (this._static._isComment(this.getTokenAt(pos))) {
+                pos++;
+                continue;
+            }
+
             let {expression, endPosition} = this._parseExpression(pos);
 
             expressions.push(expression);

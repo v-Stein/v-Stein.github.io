@@ -193,8 +193,9 @@ class SyntaxParser {
         this
             ._whiteSpace(8)
             ._write(definition.returnType)
-            ._write(' ')
-            ._write(name);
+            ._whiteSpace()
+            ._write(name)
+            ._whiteSpace();
 
         this._addParameters(definition.parameters);
 
@@ -291,7 +292,7 @@ class SyntaxParser {
             }
             else {
                 this._write(token.value);
-                if (token.type !== 'PERIOD' && nextToken.type !== 'PERIOD' && i !== tokens.length - 1) {
+                if (token.type !== 'PERIOD' && nextToken.type !== 'PERIOD' && i !== tokens.length - 1 && token.type !== 'L_PAREN' && token.type !== 'R_PAREN' && nextToken.type !== 'L_PAREN' && nextToken.type !== 'R_PAREN') {
                     this._whiteSpace();
                 }
             }
