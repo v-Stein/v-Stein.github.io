@@ -12,6 +12,11 @@ class SyntaxParser {
         this._registerBuiltins();
     }
 
+    /**
+     * Registers all existing builtin modules from './builtins' folder
+     *
+     * @private
+     */
     _registerBuiltins () {
         let dir = path.join(__dirname, '../', 'builtins');
         let files = fs.readdirSync(dir);
@@ -22,18 +27,33 @@ class SyntaxParser {
         }
     }
 
-    _write (text) {
+    /**
+     * Writes a text on a line
+     *
+     * @param text
+     * @returns {SyntaxParser}
+     * @private
+     */
+    _write (text = '') {
         this.result += text;
 
         return this;
     }
 
-    _writeLine (text) {
+    /**
+     * Writes a text and adds a new line
+     *
+     * @param text
+     * @returns {SyntaxParser}
+     * @private
+     */
+    _writeLine (text = '') {
         this.result += text + '\n';
 
         return this;
     }
 
+<<<<<<< HEAD
     _whiteSpace (number = 1) {
         for (let i = 0; i < number; i++) {
             this._write(' ');
@@ -42,13 +62,37 @@ class SyntaxParser {
         return this;
     }
 
+=======
+    /**
+     * Adds a desired number of whitespace (mostly used for indent)
+     *
+     * @param nb
+     * @returns {SyntaxParser}
+     * @private
+     */
+    _whiteSpace (nb = 1) {
+        while (nb) {
+            this._write(' ');
+            nb--;
+        }
+        return this;
+    }
+
+    /**
+     * Adds the header part of the file (where imports and typedef are written)
+     *
+     * @returns {SyntaxParser}
+     * @private
+     */
+>>>>>>> 917ce1b30ab33161429a99720209f154cefe9361
     _addHeaders () {
         return this
             ._writeLine('#include <iostream>')
+            ._writeLine()
             ._writeLine('typedef std::string String;')
             ._writeLine('typedef int Int;')
             ._writeLine('typedef char Char;')
-            ._writeLine('');
+            ._writeLine();
     }
 
     _addBuiltinImports () {
@@ -86,12 +130,13 @@ class SyntaxParser {
         if (definition.inherits) {
             this._write(': public ' + definition.inherits);
         }
-        this._writeLine('{');
+        this._writeLine(' {');
 
         this._addPrivate(definition.private);
         this._addProtected(definition.protected);
         this._addPublic(definition.public);
 
+<<<<<<< HEAD
         this._writeLine('};')._writeLine('');
     }
 
@@ -102,33 +147,54 @@ class SyntaxParser {
         if (nbProperties || nbMethods) {
             this._writeLine('    private:');
         }
+=======
+        this._writeLine('};')._writeLine();
+    }
 
-        this._addProperties(definition.properties);
-        this._addMethods(definition.methods);
+    _addPrivate (definition) {
+        if (Object.keys(definition.methods).length || Object.keys(definition.properties).length) {
+            this._whiteSpace(4)._writeLine('private:');
+>>>>>>> 917ce1b30ab33161429a99720209f154cefe9361
+
+            this._addProperties(definition.properties);
+            this._addMethods(definition.methods);
+        }
     }
 
     _addProtected (definition) {
+<<<<<<< HEAD
         let nbProperties    = Object.keys(definition.properties).length;
         let nbMethods       = Object.keys(definition.methods).length;
 
         if (nbProperties || nbMethods) {
             this._writeLine('    protected:');
         }
+=======
+        if (Object.keys(definition.methods).length || Object.keys(definition.properties).length) {
+            this._whiteSpace(4)._writeLine('protected:');
+>>>>>>> 917ce1b30ab33161429a99720209f154cefe9361
 
-        this._addProperties(definition.properties);
-        this._addMethods(definition.methods);
+            this._addProperties(definition.properties);
+            this._addMethods(definition.methods);
+        }
     }
 
     _addPublic (definition) {
+<<<<<<< HEAD
         let nbProperties    = Object.keys(definition.properties).length;
         let nbMethods       = Object.keys(definition.methods).length;
 
         if (nbProperties || nbMethods) {
             this._writeLine('    public:');
         }
+=======
+        if (Object.keys(definition.methods).length || Object.keys(definition.properties).length) {
+            this._whiteSpace(4)._writeLine('public:');
+>>>>>>> 917ce1b30ab33161429a99720209f154cefe9361
 
-        this._addProperties(definition.properties);
-        this._addMethods(definition.methods);
+            this._addProperties(definition.properties);
+            this._addMethods(definition.methods);
+        }
     }
 
     _addProperties (definition) {
@@ -158,7 +224,11 @@ class SyntaxParser {
     }
 
     _addMethods (definition) {
+<<<<<<< HEAD
         for (let methodName in definition) {
+=======
+        for(let methodName in definition) {
+>>>>>>> 917ce1b30ab33161429a99720209f154cefe9361
             if (definition.hasOwnProperty(methodName)) {
                 this._addMethod(methodName, definition[methodName]);
             }
@@ -166,6 +236,7 @@ class SyntaxParser {
     }
 
     _addMethod (name, definition) {
+<<<<<<< HEAD
         let returnType  = definition.returnType,
             parameters  = definition.parameters,
             expressions = definition.expressions;
@@ -179,11 +250,26 @@ class SyntaxParser {
         this._writeLine(' {');
 
         this._addExpressions(expressions);
+=======
+        this
+            ._whiteSpace(8)
+            ._write(definition.returnType)
+            ._whiteSpace()
+            ._write(name)
+            ._whiteSpace();
+
+        this._addParameters(definition.parameters);
+
+        this._writeLine(' {');
+
+        this._addExpressions(definition.expressions);
+>>>>>>> 917ce1b30ab33161429a99720209f154cefe9361
 
         this._whiteSpace(8)._writeLine('}');
     }
 
     _addParameters (parameters) {
+<<<<<<< HEAD
         this._write(' (');
 
         for (let i = 0; i < parameters.length; i++) {
@@ -262,6 +348,98 @@ class SyntaxParser {
         this._write('return ');
 
         this._addCallExpression(expression);
+=======
+        this._write('(');
+
+        for (let i = 0; i < parameters.length; i++) {
+            let param = parameters[i];
+
+            this._write(param.type)._write(' ')._write(param.name);
+
+            if (i !== parameters.length - 1) {
+                this._write(', ');
+            }
+        }
+
+        this._write(')');
+    }
+
+    _addExpressions (expressions) {
+        for (let expression of expressions) {
+            this._whiteSpace(12)
+                ._addExpression(expression);
+        }
+    }
+
+    _addExpression (expression) {
+        switch(expression.type) {
+            case 'assignement':
+                this._addAssignementExpression(expression);
+                break;
+            case 'call':
+                this._addCallExpression(expression.statement);
+                break;
+            case 'return':
+                this._addReturnExpression(expression.statement);
+                break;
+            default:
+                throw Error('Unrecognized expression');
+        }
+    }
+
+    _addAssignementExpression (expression) {
+        this._addLeftHandedExpression(expression.leftHanded);
+        this._write(' = ');
+        this._addRightHandedExpression(expression.rightHanded);
+        this._writeLine(';');
+    }
+
+    _addCallExpression (expression) {
+        this._addRightHandedExpression(expression);
+        this._writeLine(';');
+    }
+
+    _addReturnExpression (expression) {
+        this._write('return ');
+        this._addRightHandedExpression(expression);
+        this._writeLine(';');
+    }
+
+    _addLeftHandedExpression (tokens) {
+        if (tokens.length > 3) throw Error('Invalid left handed statement');
+
+        let firstToken = tokens[0];
+
+        if (firstToken.type === 'EXCLAMATION') {
+            // Constant
+            this._write('const ');
+            this._write(tokens[1].value)._write(' ')._write(tokens[2].value);
+        }
+        else {
+            this._addRightHandedExpression(tokens);
+        }
+    }
+
+    _addRightHandedExpression (tokens) {
+        for (let i = 0; i < tokens.length; i++) {
+            let token = tokens[i],
+                previousToken = {},
+                nextToken = {};
+
+            if (i) previousToken = tokens[i - 1];
+            if (i !== tokens.length -1) nextToken = tokens[i + 1];
+
+            if (token.type === 'PERIOD' && previousToken.type === 'IDENTIFIER' && previousToken.value === 'this') {
+                this._write('->');
+            }
+            else {
+                this._write(token.value);
+                if (token.type !== 'PERIOD' && nextToken.type !== 'PERIOD' && i !== tokens.length - 1 && token.type !== 'L_PAREN' && token.type !== 'R_PAREN' && nextToken.type !== 'L_PAREN' && nextToken.type !== 'R_PAREN') {
+                    this._whiteSpace();
+                }
+            }
+        }
+>>>>>>> 917ce1b30ab33161429a99720209f154cefe9361
     }
 
     _addFileEnding () {

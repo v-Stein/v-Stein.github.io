@@ -1,0 +1,44 @@
+using @Console;
+
+# This is an inline comment, it will not be interpreted.
+
+#{
+  This is a block comment, it will not be interpreted.
+
+  Each program must have the "Main" class, as it is the entry
+  class of the program.
+
+  This class must also have a public "main" method. It will be
+  the first to be called. This method should return an exit code
+  which is an int.
+#}
+
+# This class inherits from the Console builtin
+class Foo < Console {
+    + greet:void (String user) {
+        this.out("Greetings " + user + "!");
+    }
+}
+
+class Main {
+    # Private properties
+    - Console c;
+    - String user;
+
+    # Constructor of the class (must always be public)
+    + Main () {
+        this.user = "some user";
+    }
+
+    # The program entry point
+    + main:Int () {
+        Foo myClass;
+
+        this.c.out("This is a program that has a Console property.");
+
+        myClass.greet(this.user);
+
+        # This is a comment in a function
+        >> 0;
+    }
+}
