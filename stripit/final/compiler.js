@@ -14,8 +14,10 @@ class Compiler {
     compile (file, encoding = 'utf-8') {
         let content = fs.readFileSync(file, encoding);
 
-        this._runTreeBuilder(
-            this._runLexer(content)
+        this._runSyntaxParser(
+            this._runTreeBuilder(
+                this._runLexer(content)
+            )
         )
     }
 

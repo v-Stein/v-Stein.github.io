@@ -5,20 +5,18 @@ class Main < Console {
 
     + !String greet = "foo";
 
-    # This method is the program entry point (+ means that is a public method)
+    # This method is the program entry point ('+' means that is a public method)
     + main:Int () {
         !String hello = "Hello, World!";
-        this.out(hello);
+        this.out(this.greetUser("Tripes"));
         >> 0;
     }
 
 
-    - greet:String (String user) {
+    - greetUser:String (String user) {
         String greetings = "Greetings " + user + "!";
 
         >> greetings;
     }
 
 }
-
-class Foo < Main{}

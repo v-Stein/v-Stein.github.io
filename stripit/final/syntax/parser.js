@@ -34,6 +34,14 @@ class SyntaxParser {
         return this;
     }
 
+    _whiteSpace (number = 1) {
+        for (let i = 0; i < number; i++) {
+            this._write(' ');
+        }
+
+        return this;
+    }
+
     _addHeaders () {
         return this
             ._writeLine('#include <iostream>')
@@ -52,12 +60,12 @@ class SyntaxParser {
     _addBuiltinImport (builtin) {
         if (! (builtin in this.builtins)) throw Error('Unkown builtin module "' + builtin + '"');
 
-        this._write(this.builtins[builtin]);
+        this._writeLine(this.builtins[builtin]);
     }
 
     _addModuleImports () {
         for (let module of this.tree.moduleImports) {
-            this._addModuleImport(module);
+            this._addModuleImport(module)._writeLine('');
         }
     }
 
@@ -84,25 +92,40 @@ class SyntaxParser {
         this._addProtected(definition.protected);
         this._addPublic(definition.public);
 
-        this._writeLine('}');
+        this._writeLine('};')._writeLine('');
     }
 
     _addPrivate (definition) {
-        this._writeLine('    private:');
+        let nbProperties    = Object.keys(definition.properties).length;
+        let nbMethods       = Object.keys(definition.methods).length;
+
+        if (nbProperties || nbMethods) {
+            this._writeLine('    private:');
+        }
 
         this._addProperties(definition.properties);
         this._addMethods(definition.methods);
     }
 
     _addProtected (definition) {
-        this._writeLine('    protected:');
+        let nbProperties    = Object.keys(definition.properties).length;
+        let nbMethods       = Object.keys(definition.methods).length;
+
+        if (nbProperties || nbMethods) {
+            this._writeLine('    protected:');
+        }
 
         this._addProperties(definition.properties);
         this._addMethods(definition.methods);
     }
 
     _addPublic (definition) {
-        this._writeLine('    public:');
+        let nbProperties    = Object.keys(definition.properties).length;
+        let nbMethods       = Object.keys(definition.methods).length;
+
+        if (nbProperties || nbMethods) {
+            this._writeLine('    public:');
+        }
 
         this._addProperties(definition.properties);
         this._addMethods(definition.methods);
@@ -121,19 +144,124 @@ class SyntaxParser {
             constant    = definition.constant,
             value       = definition.value;
 
+        this._whiteSpace(8);
+
         if (constant) {
             this._write('const ');
         }
-        this._write(type).write(' ').write(name);
+        this._write(type)._write(' ')._write(name);
 
         if (value) {
-            this._write(' = ').write(value);
+            this._write(' = ')._write(value);
         }
-        this._write(';');
+        this._writeLine(';');
     }
 
     _addMethods (definition) {
+        for (let methodName in definition) {
+            if (definition.hasOwnProperty(methodName)) {
+                this._addMethod(methodName, definition[methodName]);
+            }
+        }
+    }
 
+    _addMethod (name, definition) {
+        let returnType  = definition.returnType,
+            parameters  = definition.parameters,
+            expressions = definition.expressions;
+
+        this._whiteSpace(8);
+
+        this._write(returnType)._write(' ')._write(name);
+
+        this._addParameters(parameters);
+
+        this._writeLine(' {');
+
+        this._addExpressions(expressions);
+
+        this._whiteSpace(8)._writeLine('}');
+    }
+
+    _addParameters (parameters) {
+        this._write(' (');
+
+        for (let i = 0; i < parameters.length; i++) {
+            this._write(parameters[i].type)._write(' ')._write(parameters[i].name);
+
+            if (i !== parameters.length - 1) this._write(', ');
+        }
+
+        this._write(')');
+    }
+
+    _addExpressions (expressions) {
+        for (let expression of expressions) {
+            this._addExpression(expression);
+        }
+    }
+
+    _addExpression (expression) {
+        this._whiteSpace(12);
+        switch (expression.type) {
+            case 'assignement':
+                this._addAssignementExpression(expression);
+                break;
+            case 'call':
+                this._addCallExpression(expression.statement);
+                break;
+            case 'return':
+                this._addReturnExpression(expression.statement);
+                break;
+        }
+    }
+
+    _addAssignementExpression (expression) {
+        this._addLeftHandedExpression(expression.leftHanded);
+        this._write(' =');
+        this._addCallExpression(expression.rightHanded);
+    }
+
+    _addLeftHandedExpression (expression) {
+        for (let i = 0; i < expression.length; i++) {
+            let token = expression[i];
+
+            if (token.type === 'EXCLAMATION') {
+                this._write('const');
+            }
+            else {
+                this._write(' ')._write(token.value);
+            }
+        }
+    }
+
+    _addCallExpression (expression) {
+        for (let i = 0; i < expression.length; i++) {
+            let previousToken   = expression[i - 1],
+                token           = expression[i];
+
+            if (token.type === 'PERIOD') {
+                if (previousToken && previousToken.type === 'IDENTIFIER' && previousToken.value === 'this') {
+                    this._write('->');
+                }
+                else {
+                    this._write('.');
+                }
+            }
+            else {
+                if (previousToken && previousToken.type !== 'PERIOD') {
+                    this._whiteSpace();
+                }
+                this._write(token.value);
+            }
+        }
+        this._writeLine(';');
+    }
+
+    _addReturnExpression (expression) {
+        this._write('return ');
+
+        this._addCallExpression(expression);
     }
 
     _addFileEnding () {

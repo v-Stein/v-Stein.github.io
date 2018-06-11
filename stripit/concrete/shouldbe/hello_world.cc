@@ -1,5 +1,4 @@
 #include <iostream>
-
 typedef std::string String;
 typedef int Int;
 typedef char Char;
