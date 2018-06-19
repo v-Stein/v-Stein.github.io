@@ -14,14 +14,6 @@ class Compiler {
 
     compile (file, out, encoding = 'utf-8') {
         let content = fs.readFileSync(file, encoding);
-
-<<<<<<< HEAD
-        this._runSyntaxParser(
-            this._runTreeBuilder(
-                this._runLexer(content)
-            )
-        )
-=======
         let result = this._runSyntaxParser(
             this._runTreeBuilder(
                 this._runLexer(content)
@@ -36,9 +28,8 @@ class Compiler {
                 return;
             }
 
-            // fs.unlinkSync('./temp.cc');
+            fs.unlinkSync('./temp.cc');
         });
->>>>>>> 917ce1b30ab33161429a99720209f154cefe9361
     }
 
     _runLexer (content) {
