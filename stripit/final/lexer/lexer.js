@@ -124,6 +124,11 @@ class Lexer {
         }
     }
 
+    /**
+     * Identifies an IDENTIFIER token
+     * @returns {{name: string, value: string, pos: number|*}}
+     * @private
+     */
     _processIdentifier () {
         let endPos = this.pos + 1;
 
@@ -141,6 +146,11 @@ class Lexer {
         return token;
     }
 
+    /**
+     * Identifies a NUMBER token
+     * @returns {{name: string, value: string, pos: number|*}}
+     * @private
+     */
     _processNumber () {
         let endPos = this.pos + 1;
 
@@ -158,6 +168,11 @@ class Lexer {
         return token;
     }
 
+    /**
+     * Identifies a QUOTE token
+     * @returns {{name: string, value: string, pos: number|*}}
+     * @private
+     */
     _processQuote () {
         let endIndex = this.buffer.indexOf('"', this.pos + 1);
 
@@ -176,6 +191,11 @@ class Lexer {
         }
     }
 
+    /**
+     * Identifies a CHAR_QUOTE token
+     * @returns {{name: string, value: string, pos: number|*}}
+     * @private
+     */
     _processCharQuote () {
         let endIndex = this.buffer.indexOf("'", this.pos + 1);
 
@@ -272,6 +292,10 @@ class Lexer {
         }
     }
 
+    /**
+     * Lex all the tokens
+     * @returns {Array}
+     */
     lexAll () {
         let tokens = [],
             token;
@@ -282,22 +306,45 @@ class Lexer {
         return tokens;
     }
 
-
+    /**
+     * Determines whether a char is alpha
+     * @param char
+     * @returns {boolean}
+     * @private
+     */
     static _isAlpha (char) {
         return (char >= 'a' && char <= 'z')
             || (char >= 'A' && char <= 'Z')
             || (char === '_')
     }
 
+    /**
+     * Determines whether a char is a digit
+     * @param char
+     * @returns {boolean}
+     * @private
+     */
     static _isDigit (char) {
         return (char >= '0' && char <= '9');
     }
 
+    /**
+     * Determines whether a char is alpha or digit
+     * @param char
+     * @returns {boolean}
+     * @private
+     */
     static _isAlphaNum (char) {
         return (Lexer._isAlpha(char))
             || (Lexer._isDigit(char))
     }
 
+    /**
+     * Determines whether a char is a new line
+     * @param char
+     * @returns {boolean}
+     * @private
+     */
     static _isNewLine (char) {
         return (char === '\r')
             || (char === '\n');

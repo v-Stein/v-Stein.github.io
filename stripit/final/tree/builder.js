@@ -166,7 +166,7 @@ class TreeBuilder {
         // first opening parenthesis is closed
         while (L_ParenCount - R_ParenCount !== 0) {
             // If the position is superior than the full tokens length, then it is likely
-            // the first opening parenthesis is not closed. So inform the user it is malfomed
+            // the first opening parenthesis is not closed. So inform the user it is malformed
             if (pos > this.tokensLength) throw Error('Unclosed parenthesis error');
 
             let token = this.getTokenAt(pos);
@@ -228,7 +228,7 @@ class TreeBuilder {
             returnType: method.returnType,
             parameters: method.parameters,
             expressions: method.expressions
-        }
+        };
 
         return content;
     }

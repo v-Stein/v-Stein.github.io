@@ -5,6 +5,8 @@ const
 
 class SyntaxParser {
     constructor () {
+        this.baseDir = null;
+
         this.tree   = {};
         this.result = '';
         this.builtins = {};
@@ -91,7 +93,7 @@ class SyntaxParser {
     }
 
     _addBuiltinImport (builtin) {
-        if (! (builtin in this.builtins)) throw Error('Unkown builtin module "' + builtin + '"');
+        if (! (builtin in this.builtins)) throw Error('Unknown builtin module "' + builtin + '"');
 
         this._writeLine(this.builtins[builtin]);
     }
@@ -102,8 +104,27 @@ class SyntaxParser {
         }
     }
 
-    _addModuleImport () {
-        // TODO: Implement module importing
+    _addModuleImport (module) {
+        if (module.split('.').pop() !== 'stp') {
+            module += '.stp';
+        }
+        let modulePath = path.join(this.baseDir, module);
+        let moduleScript = fs.readFileSync(modulePath, 'utf-8');
+
+        let Compiler = require('../compiler');
+        let compiler = new Compiler();
+
+        let moduleCode = compiler._runSyntaxParser(
+            compiler._runTreeBuilder(
+                compiler._runLexer(moduleScript)
+            )
+        );
+
+
+        // throw 0;
+
+        this._writeLine(moduleCode);
+        return this;
     }
 
     _addClasses () {
@@ -309,6 +330,10 @@ class SyntaxParser {
     input (tree) {
         this.tree = tree;
         this.result = '';
+    }
+
+    setBaseDir (dir) {
+        this.baseDir = dir;
     }
 
     parseTree () {

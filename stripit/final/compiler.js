@@ -2,17 +2,23 @@ const Lexer = require('./lexer/lexer');
 const TreeBuilder = require('./tree/builder');
 const SyntaxParser = require('./syntax/parser');
 const fs = require('fs');
+const path = require('path');
 const { exec } = require('child_process');
 
 
 class Compiler {
     constructor () {
+        this.baseDir = null;
+
         this.lexer = new Lexer();
         this.treeBuilder = new TreeBuilder();
         this.syntaxParser = new SyntaxParser();
     }
 
     compile (file, out, encoding = 'utf-8') {
+        this.baseDir = path.dirname(path.resolve(file));
+        this.syntaxParser.setBaseDir(this.baseDir);
+
         let content = fs.readFileSync(file, encoding);
         let result = this._runSyntaxParser(
             this._runTreeBuilder(

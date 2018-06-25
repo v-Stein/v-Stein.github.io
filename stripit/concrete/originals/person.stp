@@ -1,0 +1,17 @@
+
+
+export class Person {
+     - KeyVal<String, String> person = <"","">;
+
+     Person (String name, String firstName) {
+        this.person = <name, firstName>;
+     }
+
+     + getFirstName :String () {
+        >> this.person.key();
+     }
+
+     + getName :String () {
+        >> this.person.val();
+     }
+}

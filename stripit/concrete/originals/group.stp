@@ -1,0 +1,21 @@
+
+
+export class Group {
+    - KeyValCollection[KeyVal<String, String>] peoples = [];
+
+    # KeyValCollections have a different usage with + and -
+    + addPeople (KeyVal<String, String> person) {
+        this.peoples += person;
+    }
+
+    + removePeople (KeyVal<String, String> person) {
+        this.peoples -= person;
+    }
+
+    + removeFromIndex (Int index) {
+        # Some methods exist in order to use indexes
+        if (this.peoples.hasIndex(index)) {
+            this.peoples -= this.peoples.atIndex(index);
+        }
+    }
+}
