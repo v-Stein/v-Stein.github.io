@@ -4,13 +4,61 @@
         <meta charset="utf-8">
         <title>v-Stein</title>
 
+        <link rel="stylesheet" href="/public/css/obsolete.css">
+        <script src="/public/js/win98.js"></script>
+
         <script src="public/js/common.js"></script>
         <script src="public/js/firebase.js"></script>
     </head>
     <body>
-        <h1>Site under construction</h1>
-        <p>
-            This site is currently under construction, please consider it.
-        </p>
+        <div class="windows-icon first">
+            <img class="recycle-bin" src="/public/img/recyclebin.png">
+            <span class="label">Recycle bin</span>
+        </div>
+
+        <div class="windows-icon second">
+            <img class="my-computer" src="/public/img/mycomputer.png">
+            <span class="label">My computer</span>
+        </div>
+
+        <div class="windows-icon third">
+            <img class="my-documents" src="/public/img/mydocuments.png">
+            <span class="label">My documents</span>
+        </div>
+
+        <div class="window description">
+            <div class="inner">
+                <div class="header">
+                    <div class="sprite windows-application-icon"></div>
+                    Website under construction
+                    <div class="sprite windows-application-controls"></div>
+                </div>
+                <div class="content">
+                    <div class="inner">
+                        <p>
+                            This website is currently under construction. Because of the lack of time we encounter,
+                            we ask you to be patient.
+                        </p>
+                        <p>
+                            If you wish to see the repositories of this user instead of the Github Pages website,
+                            use this link : <a class="link" target="_blank" href="https://github.com/v-stein/">https://github.com/v-stein</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="start-bar-outer">
+            <div class="start-bar">
+                <div class="start-bar-start-button-outer">
+                    <div class="start-bar-start-button">
+                        Start
+                    </div>
+                </div>
+                <div class="start-left-separator"></div>
+                <div class="start-left-smaller-separator"></div>
+                <div class="dock-time" id="dock-time"></div>
+            </div>
+        </div>
     </body>
 </html>
