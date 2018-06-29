@@ -1,0 +1,11 @@
+
+
+function myFunction (Console c) {
+    c.out("I'm a function and can't have a return value.");
+}
+
+method myMethod :Bool (Console c) {
+    c.out("I'm a method and must have a return value (even if it's None).");
+
+    >> True;
+}
