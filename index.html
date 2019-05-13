@@ -1,65 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="google-site-verification" content="7Os1yZmsJjhs1z0MFjleSlHHc2QYAXE2Ca8zOkCw2cQ" />
-        <title>v-Stein</title>
+<head>
+    <meta charset="UTF-8">
+    <title>HS</title>
 
-        <link rel="stylesheet" href="/public/css/obsolete.css">
-        <script src="/public/js/win98.js"></script>
+    <style>
+        @keyframes rotate-counter-clockwise {
+            0% {
+                transform: rotate(0deg);
+                animation-timing-function: ease-out;
+            }
+            25% {
+                transform: rotate(-90deg);
+                animation-timing-function: ease-out;
+            }
+            50% {
+                transform: rotate(-180deg);
+                animation-timing-function: ease-out;
+            }
+            75% {
+                transform: rotate(-270deg);
+                animation-timing-function: ease-out;
+            }
+            100% {
+                transform: rotate(-360deg);
+                animation-timing-function: ease-out;
+            }
+        }
 
-        <script src="public/js/common.js"></script>
-        <script src="public/js/firebase.js"></script>
-    </head>
-    <body>
-        <div class="windows-icon first">
-            <img class="recycle-bin" src="/public/img/recyclebin.png">
-            <span class="label">Recycle bin</span>
-        </div>
+        @keyframes rotate-clockwise {
+            0% {
+                transform: rotate(0deg);
+                animation-timing-function: ease-out;
+            }
+            25% {
+                transform: rotate(90deg);
+                animation-timing-function: ease-out;
+            }
+            50% {
+                transform: rotate(180deg);
+                animation-timing-function: ease-out;
+            }
+            75% {
+                transform: rotate(270deg);
+                animation-timing-function: ease-out;
+            }
+            100% {
+                transform: rotate(360deg);
+                animation-timing-function: ease-out;
+            }
+        }
 
-        <div class="windows-icon second">
-            <img class="my-computer" src="/public/img/mycomputer.png">
-            <span class="label">My computer</span>
-        </div>
+        * {
+            box-sizing: border-box;
+        }
+        html, body {
+            margin: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        .background {
+            height: 100%;
+            width: 100%;
+            background-color: #000;
+        }
+        .row {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
 
-        <div class="windows-icon third">
-            <img class="my-documents" src="/public/img/mydocuments.png">
-            <span class="label">My documents</span>
-        </div>
+        .container {
+            position: relative;
+            width: 500px;
+            height: 500px;
+        }
+        .outer-circle {
+            position: absolute;
+            left: 0;
+            top: 0;
+            border: 6px solid #fff;
+            border-radius: 50%;
+            width: 500px;
+            height: 500px;
+        }
+        .inner-circle {
+            position: absolute;
+            top: 32px;
+            left: 32px;
+            border: 6px solid #fff;
+            border-radius: 50%;
+            width: 426px;
+            height: 426px;
+        }
+        .top-circle {
+            position: absolute;
+            top: -306px;
+            left: 37px;
+            border: 6px solid transparent;
+            border-bottom-color: #fff;
+            border-radius: 50%;
+            width: 426px;
+            height: 426px;
+        }
+        .bottom-circle {
+            position: absolute;
+            left: 37px;
+            top: 380px;
+            border: 6px solid transparent;
+            border-top-color: #fff;
+            border-radius: 50%;
+            width: 426px;
+            height: 426px;
+        }
+        .left-circle {
+            position: absolute;
+            left: -306px;
+            top: 37px;
+            border: 6px solid transparent;
+            border-right-color: #fff;
+            border-radius: 50%;
+            width: 426px;
+            height: 426px;
+        }
+        .right-circle {
+            position: absolute;
+            right: -306px;
+            top: 37px;
+            border: 6px solid transparent;
+            border-left-color: #fff;
+            border-radius: 50%;
+            width: 426px;
+            height: 426px;
+        }
+        .hs-left {
+            position: absolute;
+            top: 250px;
+            left: 140px;
+            border-left: 6px solid #fff;
+            width: 426px;
+            height: 106px;
+            transform: rotateZ(45deg);
+        }
+        .hs-middle {
+            position: absolute;
+            top: 207px;
+            left: 69px;
+            border-top: 6px solid #fff;
+            width: 192px;
+            height: 212px;
+            transform: rotateZ(51deg);
+        }
+        .hs-right {
+            position: absolute;
+            top: 440px;
+            left: 218px;
+            border-left: 6px solid #fff;
+            width: 426px;
+            height: 106px;
+            transform: rotateZ(45deg);
+        }
 
-        <div class="window description">
-            <div class="inner">
-                <div class="header">
-                    <div class="sprite windows-application-icon"></div>
-                    Website under construction
-                    <div class="sprite windows-application-controls"></div>
+        .rotate-counter-clockwise {
+            animation-name: rotate-counter-clockwise;
+            animation-duration: 5s;
+            animation-iteration-count: infinite;
+            animation-timing-function: steps(5, start);
+            transform-origin: 250px 250px;
+        }
+        .rotate-clockwise {
+            animation-name: rotate-clockwise;
+            animation-duration: 5s;
+            animation-iteration-count: infinite;
+            animation-timing-function: steps(5, start);
+            transform-origin: 250px 250px;
+        }
+    </style>
+</head>
+<body>
+    <div class="background row">
+
+        <div class="container">
+            <div class="rotate-counter-clockwise">
+                <div class="outer-circle">
+                    <div class="inner-circle"></div>
                 </div>
-                <div class="content">
-                    <div class="inner">
-                        <p>
-                            This website is currently under construction. Because of the lack of time we encounter,
-                            we ask you to be patient.
-                        </p>
-                        <p>
-                            If you wish to see the repositories of this user instead of the Github Pages website,
-                            use this link : <a class="link" target="_blank" href="https://github.com/v-stein/">https://github.com/v-stein</a>
-                        </p>
-                    </div>
-                </div>
+
+                <div class="top-circle"></div>
+                <div class="bottom-circle"></div>
+                <div class="left-circle"></div>
+                <div class="right-circle"></div>
+            </div>
+            <div class="rotate-clockwise">
+                <div class="hs-left"></div>
+                <div class="hs-middle"></div>
+                <div class="hs-right"></div>
             </div>
         </div>
-
-        <div class="start-bar-outer">
-            <div class="start-bar">
-                <div class="start-bar-start-button-outer">
-                    <div class="start-bar-start-button">
-                        Start
-                    </div>
-                </div>
-                <div class="start-left-separator"></div>
-                <div class="start-left-smaller-separator"></div>
-                <div class="dock-time" id="dock-time"></div>
-            </div>
-        </div>
-    </body>
+    </div>
+</body>
 </html>
